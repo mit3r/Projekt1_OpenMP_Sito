@@ -3,5 +3,11 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Projekt1_OpenMP_Sito/Projekt1_OpenMP_Sito.vcxproj" />
+  <Project Path="Projekt1_2_Dzielenie_równoległe/Projekt1_2_Dzielenie_równoległe.vcxproj" Id="4ea4f8dd-f1fa-4fae-b142-6f8f56d93d23" />
+  <Project Path="Projekt1_3_Sito_sekwencyjne_bez_lokalności/Projekt1_3_Sito_sekwencyjne_bez_lokalności.vcxproj" Id="4eafe062-9147-46e9-889e-0ee1b5680ed0" />
+  <Project Path="Projekt1_4_Sito_sekwencyjne_z_lokalnoscia/Projekt1_4_Sito_sekwencyjne_z_lokalnoscia.vcxproj" Id="8eac7305-99b7-47d1-9526-d239f0bd546b" />
+  <Project Path="Projekt1_5_Sito_równoległe_funkcyjne_zapis/Projekt1_5_Sito_równoległe_funkcyjne_zapis.vcxproj" Id="d85dd78f-a054-4238-9355-4c3cc6f18409" />
+  <Project Path="Projekt1_7_Sito_równoległe_domenowe/Projekt1_7_Sito_równoległe_domenowe.vcxproj" Id="f42d8efc-7759-4773-a025-154ce7214e10" />
+  <Project Path="Projekt1_Dzielenie_sekwencyjne/Projekt1_Dzielenie_sekwencyjne.vcxproj" Id="3147f108-bf5a-47d2-bd34-510a98194815" />
+  <Project Path="Projekt1_OpenMP_Sito/Projekt1_OpenMP_Sito.vcxproj" Id="82ca07ce-bc64-44c9-960d-9fe50c44c15c" />
 </Solution>

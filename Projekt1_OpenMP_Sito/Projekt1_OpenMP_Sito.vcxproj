@@ -24,6 +24,7 @@
     <ProjectGuid>{82ca07ce-bc64-44c9-960d-9fe50c44c15c}</ProjectGuid>
     <RootNamespace>Projekt1OpenMPSito</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Projekt1_6_Sito_równoległe_bez_lokalności_odczyt_zapis</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -141,7 +142,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_OpenMP_Sito.cpp" />
+    <ClCompile Include="Projekt1_Sito_równoległe_bez_lokalności_odczyt_zapis.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
