@@ -1,19 +1,97 @@
 ﻿// sito równoległe funkcyjne zapis [k4]
-
 #include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <cmath>
+#include <cstring>
+#include <omp.h>
+#include <algorithm>
 
-int main()
+int main(int argc, char **argv)
 {
-    std::cout << "Hello World!\n";
+    // Ustalanie domyślnego zakresu (n = 2^20)
+    int m = 2;
+    int n = pow(2, 20);
+
+    // Parsowanie argumentów z konsoli
+    for (int i = 0; i < argc; i++)
+    {
+        if (!strcmp(argv[i], "-m") && i + 1 < argc)
+            m = std::atoi(argv[i + 1]);
+        if (!strcmp(argv[i], "-n") && i + 1 < argc)
+            n = std::atoi(argv[i + 1]);
+    }
+
+    bool *result = new bool[n - m + 1];
+    std::memset(result, true, (n - m + 1) * sizeof(bool));
+
+    bool *primeArray = new bool[(int)(sqrt(n) + 1)];
+    std::memset(primeArray, true, (sqrt(n) + 1) * sizeof(bool));
+
+    // Inicjalizacja tablicy dla sqrt(n)
+    int limit = std::sqrt(n);
+    primeArray[0] = primeArray[1] = false;
+
+    double startTime = omp_get_wtime();
+
+    // Wyznaczanie bazowych liczb pierwszych do sqrt(n) (sekwencyjnie)
+    for (int i = 2; i <= limit; i++)
+    {
+        for (int j = 2; j * j <= i; j++)
+        {
+            if (primeArray[j] == true && i % j == 0)
+            {
+                primeArray[i] = false;
+                break;
+            }
+        }
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (int i = m; i <= n; i++)
+    {
+        for (int j = 2; j * j <= i; j++)
+        {
+            if (primeArray[j] == true && i % j == 0)
+            {
+                result[i - m] = false;
+                break;
+            }
+        }
+    }
+
+    double endTime = omp_get_wtime();
+    std::cout << "Czas obliczania liczb pierwszych w przedziale [m, n]: " << endTime - startTime << " sekund" << std::endl;
+
+    // Wypisywanie wyników do pliku, jeśli podano flagę -o
+    bool doPrint = false;
+    for (int i = 0; i < argc; i++)
+    {
+        if (!strcmp(argv[i], "-o"))
+        {
+            doPrint = true;
+            break;
+        }
+    }
+
+    if (doPrint)
+    {
+        std::fstream file("primes_2.txt", std::ios::out);
+
+        for (int i = m; i <= n; i++)
+        {
+            if (result[i - m])
+            {
+                file << i << "\n";
+            }
+        }
+
+        file.close();
+
+        std::cout << "dlugosc listy: " << std::count(result, result + (n - m + 1), true) << std::endl;
+    }
+
+    delete[] result;
+    delete[] primeArray;
+    return 0;
 }
-
-// Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
-
-// Porady dotyczące rozpoczynania pracy:
-//   1. Użyj okna Eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
-//   2. Użyj okna programu Team Explorer, aby nawiązać połączenie z kontrolą źródła
-//   3. Użyj okna Dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
-//   4. Użyj okna Lista błędów, aby zobaczyć błędy
-//   5. Wybierz pozycję Projekt > Dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję Projekt > Dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
-//   6. Aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji Plik > Otwórz > Projekt i wybierz plik sln
