@@ -1,4 +1,6 @@
-﻿#include <iostream>
+﻿// sito sekwencyjne bez lokalności "funkcyjne" [k3]
+
+#include <iostream>
 #include <cstdlib>
 #include <fstream>
 #include <cmath>

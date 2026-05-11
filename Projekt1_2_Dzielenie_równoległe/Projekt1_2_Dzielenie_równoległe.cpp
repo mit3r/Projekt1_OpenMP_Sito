@@ -1,9 +1,12 @@
-﻿#include <iostream>
+﻿// dzielenie równoległe [k2]
+
+#include <iostream>
 #include <cstdlib>
 #include <fstream>
 #include <cmath>
 #include <cstring>
 #include <omp.h>
+#include <algorithm>
 
 int main(int argc, char **argv)
 {
@@ -23,9 +26,6 @@ int main(int argc, char **argv)
 	bool *result = new bool[n - m + 1];
 	std::memset(result, true, (n - m + 1) * sizeof(bool));
 
-	bool *result2 = new bool[n - m + 1];
-	std::memset(result2, true, (n - m + 1) * sizeof(bool));
-
 	bool *primeArray = new bool[(int)(sqrt(n) + 1)];
 	std::memset(primeArray, true, (sqrt(n) + 1) * sizeof(bool));
 
@@ -41,26 +41,6 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-	double endTime = omp_get_wtime();
-	std::cout << "Czas obliczania liczb pierwszych do sqrt(n): " << endTime - startTime << " sekund" << std::endl;
-
-	startTime = omp_get_wtime();
-	for (int i = m; i <= n; i++)
-	{
-		for (int j = 2; j * j <= i; j++)
-		{
-			if (primeArray[j] == true && i % j == 0)
-			{
-				result[i - m] = false;
-				break;
-			}
-		}
-	}
-
-	endTime = omp_get_wtime();
-	std::cout << "Czas obliczania sekwencyjnych liczb pierwszych w przedziale [m, n]: " << endTime - startTime << " sekund" << std::endl;
-
-	startTime = omp_get_wtime();
 
 #pragma omp parallel
 	{
@@ -72,13 +52,13 @@ int main(int argc, char **argv)
 			{
 				if (primeArray[j] == true && i % j == 0)
 				{
-					result2[i - m] = false;
+					result[i - m] = false;
 					break;
 				}
 			}
 		}
 	}
-	endTime = omp_get_wtime();
+	double endTime = omp_get_wtime();
 	std::cout << "Czas obliczania liczb pierwszych w przedziale [m, n]: " << endTime - startTime << " sekund" << std::endl;
 
 	// Wypisywanie wyników do pliku, jeśli podano flagę -o
@@ -88,24 +68,18 @@ int main(int argc, char **argv)
 
 	if (doPrint)
 	{
-		// sekwencyjnie
-		std::fstream file("primes_1.txt", std::ios::out);
+		// rownolegle
+		std::fstream file("primes_2.txt", std::ios::out);
 
 		for (int i = m; i <= n; i++)
 			if (result[i - m])
 				file << i << std::endl;
 
 		file.close();
-		// równolegle
-		std::fstream file2("primes_2.txt", std::ios::out);
-		for (int i = m; i <= n; i++)
-			if (result2[i - m])
-				file2 << i << std::endl;
-		file2.close();
+		std::cout << "dlugsc listy: " << std::count(result, result + (n - m + 1), true) << std::endl;
 	}
 
 	delete[] result;
-	delete[] result2;
 	delete[] primeArray;
 	return 0;
 }

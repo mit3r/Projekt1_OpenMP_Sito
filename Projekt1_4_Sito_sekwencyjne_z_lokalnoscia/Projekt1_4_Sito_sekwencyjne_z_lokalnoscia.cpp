@@ -1,5 +1,4 @@
-﻿// Projekt1_4_Sito_sekwencyjne_z_lokalnoscia.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
+﻿// sito sekwencyjne z lokalnością "domenowe" [k3a]
 
 #include <iostream>
 
