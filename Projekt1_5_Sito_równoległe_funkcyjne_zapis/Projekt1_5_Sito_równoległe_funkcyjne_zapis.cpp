@@ -1,5 +1,4 @@
-﻿// Projekt1_5_Sito_równoległe_funkcyjne_zapis.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
+﻿// sito równoległe funkcyjne zapis [k4]
 
 #include <iostream>
 

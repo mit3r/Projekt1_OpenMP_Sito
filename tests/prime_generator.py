@@ -2,7 +2,7 @@ from sympy import isprime
 
 if __name__ == "__main__":
     prime = []  
-    k = 19
+    k = 20
     n = 2**k
    
     for i in range(2, n+1):

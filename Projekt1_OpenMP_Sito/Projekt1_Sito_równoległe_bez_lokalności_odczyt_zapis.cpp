@@ -1,4 +1,6 @@
-﻿#include <iostream>
+﻿// sito równoległe bez lokalności odczyt/zapis [k4a]
+
+#include <iostream>
 #include <omp.h>
 #include <cstdlib>
 #include <math.h>

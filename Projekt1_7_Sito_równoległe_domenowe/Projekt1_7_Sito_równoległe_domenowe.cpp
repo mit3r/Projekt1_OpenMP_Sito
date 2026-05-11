@@ -1,5 +1,4 @@
-﻿// Projekt1_7_Sito_równoległe_domenowe.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
+﻿// sito rownoległe domenowe [k5]
 
 #include <iostream>
 
