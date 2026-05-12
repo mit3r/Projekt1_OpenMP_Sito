@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 		if (!strcmp(argv[i], "-m") && i + 1 < argc)
 			m = atoi(argv[i + 1]);
 		if (!strcmp(argv[i], "-n") && i + 1 < argc)
-			n = atoi(argv[i + 1]);
+			n = pow(2, atoi(argv[i + 1]));
 	}
 
 	// Właściwy algorytm

@@ -19,7 +19,7 @@ int main(int argc, char **argv)
         if (!strcmp(argv[i], "-m") && i + 1 < argc)
             m = std::atoi(argv[i + 1]);
         if (!strcmp(argv[i], "-n") && i + 1 < argc)
-            n = std::atoi(argv[i + 1]);
+            n = pow(2, std::atoi(argv[i + 1]));
     }
 
     bool *result = new bool[n - m + 1];
