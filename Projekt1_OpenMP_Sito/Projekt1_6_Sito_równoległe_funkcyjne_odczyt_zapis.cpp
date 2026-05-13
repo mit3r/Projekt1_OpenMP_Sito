@@ -7,25 +7,23 @@
 #include <omp.h>
 #include <algorithm>
 
-int main(int argc, char **argv)
-{
+int main(int argc, char** argv) {
     // Ustalanie domyślnego zakresu (n = 2^20)
     int m = 2;
     int n = pow(2, 20);
 
     // Parsowanie argumentów z konsoli
-    for (int i = 0; i < argc; i++)
-    {
-        if (!strcmp(argv[i], "-m") && i + 1 < argc)
+    for(int i = 0; i < argc; i++) {
+        if(!strcmp(argv[i], "-m") && i + 1 < argc)
             m = std::atoi(argv[i + 1]);
-        if (!strcmp(argv[i], "-n") && i + 1 < argc)
+        if(!strcmp(argv[i], "-n") && i + 1 < argc)
             n = pow(2, std::atoi(argv[i + 1]));
     }
 
-    bool *result = new bool[n - m + 1];
+    bool* result = new bool[n - m + 1];
     std::memset(result, true, (n - m + 1) * sizeof(bool));
 
-    bool *basePrimes = new bool[(int)(sqrt(n) + 1)];
+    bool* basePrimes = new bool[(int)(sqrt(n) + 1)];
     std::memset(basePrimes, true, (sqrt(n) + 1) * sizeof(bool));
 
     // Inicjalizacja tablicy dla sqrt(n)
@@ -35,12 +33,9 @@ int main(int argc, char **argv)
     double startTime = omp_get_wtime();
 
     // Wyznaczanie bazowych liczb pierwszych do sqrt(n) (sekwencyjnie)
-    for (int i = 2; i <= limit; i++)
-    {
-        for (int j = 2; j * j <= i; j++)
-        {
-            if (basePrimes[j] == true && i % j == 0)
-            {
+    for(int i = 2; i <= limit; i++) {
+        for(int j = 2; j * j <= i; j++) {
+            if(basePrimes[j] == true && i % j == 0) {
                 basePrimes[i] = false;
                 break;
             }
@@ -48,12 +43,9 @@ int main(int argc, char **argv)
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (int i = m; i <= n; i++)
-    {
-        for (int j = 2; j * j <= i; j++)
-        {
-            if (basePrimes[j] == true && i % j == 0)
-            {
+    for(int i = m; i <= n; i++) {
+        for(int j = 2; j * j <= i; j++) {
+            if(basePrimes[j] == true && i % j == 0) {
                 result[i - m] = false;
                 break;
             }
@@ -65,23 +57,18 @@ int main(int argc, char **argv)
 
     // Wypisywanie wyników do pliku, jeśli podano flagę -o
     bool doPrint = false;
-    for (int i = 0; i < argc; i++)
-    {
-        if (!strcmp(argv[i], "-o"))
-        {
+    for(int i = 0; i < argc; i++) {
+        if(!strcmp(argv[i], "-o")) {
             doPrint = true;
             break;
         }
     }
 
-    if (doPrint)
-    {
+    if(doPrint) {
         std::fstream file("primes_2.txt", std::ios::out);
 
-        for (int i = m; i <= n; i++)
-        {
-            if (result[i - m])
-            {
+        for(int i = m; i <= n; i++) {
+            if(result[i - m]) {
                 file << i << "\n";
             }
         }

@@ -11,7 +11,7 @@
 int main(int argc, char **argv)
 {
 	// Ustalanie zakresu
-	int m = 2, n = pow(2, 20);
+	int m = 2, n = pow(2, 30);
 
 	for (int i = 0; i < argc; i++)
 	{
@@ -21,19 +21,21 @@ int main(int argc, char **argv)
 			n = pow(2, atoi(argv[i + 1]));
 	}
 
+	double startTime = omp_get_wtime();
+
 	// Właściwy algorytm
-	int limit = sqrt(n);
-	bool *primeArray = new bool[limit + 1];
-	std::memset(primeArray, true, (limit + 1) * sizeof(bool));
-	primeArray[0] = primeArray[1] = false;
+	int limit = (int)std::sqrt(n);
+	bool *basePrimes = new bool[limit + 1];
+	std::memset(basePrimes, true, (limit + 1) * sizeof(bool));
+	basePrimes[0] = basePrimes[1] = false;
 
 	for (int i = 2; i * i <= limit; i++)
 	{
-		if (primeArray[i])
+		if (basePrimes[i])
 		{
 			for (int j = i * i; j <= limit; j += i)
 			{
-				primeArray[j] = false;
+				basePrimes[j] = false;
 			}
 		}
 	}
@@ -43,13 +45,13 @@ int main(int argc, char **argv)
 	bool *result = new bool[rangeSize];
 	std::memset(result, true, rangeSize * sizeof(bool));
 
-	double startTime = omp_get_wtime();
 	for (int i = 2; i <= limit; i++)
 	{
-		if (!primeArray[i])
+		if (!basePrimes[i])
 			continue;
 
 		int firstMultiple = (m / i) * i;
+
 		if (firstMultiple < m)
 			firstMultiple += i;
 
@@ -61,6 +63,7 @@ int main(int argc, char **argv)
 			result[j - m] = false;
 		}
 	}
+
 	double endTime = omp_get_wtime();
 	std::cout << "Czas obliczania liczb pierwszych w przedziale [m, n]: " << endTime - startTime << " sekund" << std::endl;
 
@@ -84,7 +87,7 @@ int main(int argc, char **argv)
 		file.close();
 	}
 
-	delete[] primeArray;
+	delete[] basePrimes;
 	delete[] result;
 
 	return 0;

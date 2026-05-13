@@ -22,11 +22,12 @@ int main(int argc, char **argv)
 	}
 
 	// Właściwy algorytm
-	bool *result = new bool[n - m + 1];
-	std::memset(result, true, (n - m + 1) * sizeof(bool));
 
 	bool *primeArray = new bool[(int)(sqrt(n) + 1)];
 	std::memset(primeArray, true, (sqrt(n) + 1) * sizeof(bool));
+
+	bool *result = new bool[n - m + 1];
+	std::memset(result, true, (n - m + 1) * sizeof(bool));
 
 	double startTime = omp_get_wtime();
 	for (int i = 2; i * i <= n; i++)

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_Sito_równoległe_bez_lokalności_odczyt_zapis.cpp">
+    <ClCompile Include="Projekt1_6_Sito_równoległe_funkcyjne_odczyt_zapis.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>

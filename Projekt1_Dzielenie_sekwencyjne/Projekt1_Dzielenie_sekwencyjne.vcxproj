@@ -140,7 +140,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_Dzielenie_sekwencyjne.cpp" />
+    <ClCompile Include="Projekt1_1_Dzielenie_sekwencyjne.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
