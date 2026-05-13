@@ -10,19 +10,17 @@
 
 int main(int argc, char **argv)
 {
-	// Ustalanie zakresu
-	int m = 2, n = pow(2, 20);
+	int m = 2, n = pow(10, 8);
 
 	for (int i = 0; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-m") && i + 1 < argc)
-			m = atoi(argv[i + 1]);
+			m = std::atoi(argv[i + 1]);
 		if (!strcmp(argv[i], "-n") && i + 1 < argc)
-			n = pow(2, atoi(argv[i + 1]));
+			n = std::atoi(argv[i + 1]);
 	}
 
 	// Właściwy algorytm
-
 	bool *result = new bool[n - m + 1];
 	std::memset(result, true, (n - m + 1) * sizeof(bool));
 

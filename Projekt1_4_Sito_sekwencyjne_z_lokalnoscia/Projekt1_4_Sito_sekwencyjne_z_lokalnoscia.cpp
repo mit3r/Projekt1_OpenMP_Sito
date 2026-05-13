@@ -1,4 +1,6 @@
-﻿#include <iostream>
+﻿// sito sekwencyjne z lokalnością [k3a]
+
+#include <iostream>
 #include <cstdlib>
 #include <fstream>
 #include <cmath>
@@ -14,13 +16,13 @@ struct alignas(64) CacheLine {
 int main(int argc, char** argv) {
 
 	// Ustalanie zakresu
-	int m = 2, n = pow(2, 30);
+	int m = 2, n = pow(10, 8);
 
 	for(int i = 0; i < argc; i++) {
 		if(!strcmp(argv[i], "-m") && i + 1 < argc)
 			m = atoi(argv[i + 1]);
 		if(!strcmp(argv[i], "-n") && i + 1 < argc)
-			n = pow(2, atoi(argv[i + 1]));
+			n = atoi(argv[i + 1]);
 	}
 
 	double startTime = omp_get_wtime();

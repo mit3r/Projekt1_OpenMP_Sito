@@ -1,0 +1,21 @@
+-r
+C:\Users\Franciszek\source\repos\Projekt1_OpenMP_Sito\Projekt1_7_Sito_równoległe_domenowe\Intel® VTune™ Profiler Results\Projekt1_7_Sito_równoległe_domenowe\r002tr
+--stack-stitching
+--data-limit-mb=1000
+--disk-space-limit=0
+--mrte-type=java,dotnet,python
+--itt-config=openmp
+--stack-unwind-limit=8388608
+--itt-config=frame
+--itt-config=task,event,counter
+--stackwalk=offline
+--mrte-mode=auto
+--type=cpu:stack
+--interval=10
+--type=threading:stack
+--type=waiting:stack
+--type=io:stack
+--platform-type=142
+--app-working-dir=C:\Users\Franciszek\source\repos\Projekt1_OpenMP_Sito\Projekt1_7_Sito_równoległe_domenowe\
+--
+C:\Users\Franciszek\source\repos\Projekt1_OpenMP_Sito\x64\Release\Projekt1_7_Sito_równoległe_domenowe.exe

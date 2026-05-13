@@ -9,18 +9,18 @@
 
 int main(int argc, char **argv)
 {
-    // Ustalanie domyślnego zakresu (n = 2^20)
     int m = 2;
-    int n = pow(2, 20);
+    int n = pow(10, 8);
 
-    // Parsowanie argumentów z konsoli
     for (int i = 0; i < argc; i++)
     {
         if (!strcmp(argv[i], "-m") && i + 1 < argc)
             m = std::atoi(argv[i + 1]);
-        if (!strcmp(argv[i], "-n") && i + 1 < argc)
-            n = pow(2, std::atoi(argv[i + 1]));
+        if(!strcmp(argv[i], "-n") && i + 1 < argc)
+            n = std::atoi(argv[i + 1]);
     }
+
+	// Właściwy algorytm
 
     bool *result = new bool[n - m + 1];
     std::memset(result, true, (n - m + 1) * sizeof(bool));
@@ -28,13 +28,11 @@ int main(int argc, char **argv)
     bool *basePrimes = new bool[(int)(sqrt(n) + 1)];
     std::memset(basePrimes, true, (sqrt(n) + 1) * sizeof(bool));
 
-    // Inicjalizacja tablicy dla sqrt(n)
     int limit = std::sqrt(n);
     basePrimes[0] = basePrimes[1] = false;
 
     double startTime = omp_get_wtime();
 
-    // Wyznaczanie bazowych liczb pierwszych do sqrt(n) (sekwencyjnie)
     for (int i = 2; i <= limit; i++)
     {
         for (int j = 2; j * j <= i; j++)
