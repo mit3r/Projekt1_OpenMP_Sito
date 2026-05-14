@@ -46,8 +46,8 @@ int main(int argc, char** argv) {
 	bool* result = new bool[n - m + 1];
 	std::memset(result, true, (n - m + 1) * sizeof(bool));
 
-	double startWallTime = clock();
-	double startProcTime = omp_get_wtime();
+	double startWallTime = omp_get_wtime();
+	double startProcTime = clock();
 
 	for(int i = 2; i * i <= n; i++) {
 		for(int j = 2; j * j <= i; j++) {
@@ -67,8 +67,8 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	double endWallTime = clock();
-	double endProcTime = omp_get_wtime();
+	double endWallTime = omp_get_wtime();
+	double endProcTime = clock();
 
 	std::cout << "Wall_clock_time: " << (endWallTime - startWallTime) / CLOCKS_PER_SEC << std::endl;
 	std::cout << "Processor_time: " << (endProcTime - startProcTime) << std::endl;
