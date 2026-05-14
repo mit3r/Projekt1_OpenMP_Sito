@@ -62,10 +62,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
-#pragma omp parallel
-	{
-		// ? Jaki podział pracy ?
-#pragma omp for schedule(dynamic)
+#pragma omp parallel for schedule(dynamic)
 		for(int i = m; i <= n; i++) {
 			for(int j = 2; j * j <= i; j++) {
 				if(basePrimes[j] == true && i % j == 0) {
@@ -74,7 +71,7 @@ int main(int argc, char** argv) {
 				}
 			}
 		}
-	}
+	
 
 	double endWallTime = omp_get_wtime();
 	double endProcTime = clock();
