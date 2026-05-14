@@ -1,4 +1,5 @@
 ﻿// sito równoległe funkcyjne zapis [k4]
+
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
@@ -6,90 +7,82 @@
 #include <cstring>
 #include <omp.h>
 #include <algorithm>
+#include <time.h>
 
-int main(int argc, char **argv)
-{
-    int m = 2;
-    int n = pow(10, 8);
+bool utils_doPrint = false;
 
-    for (int i = 0; i < argc; i++)
-    {
-        if (!strcmp(argv[i], "-m") && i + 1 < argc)
-            m = std::atoi(argv[i + 1]);
-        if(!strcmp(argv[i], "-n") && i + 1 < argc)
-            n = std::atoi(argv[i + 1]);
-    }
+void utils_get_args(int argc, char** argv, int& m, int& n) {
+	for(int i = 0; i < argc; i++) {
+		if(!strcmp(argv[i], "-m") && i + 1 < argc)
+			m = std::atoi(argv[i + 1]);
+		if(!strcmp(argv[i], "-n") && i + 1 < argc)
+			n = std::atoi(argv[i + 1]);
+		if(!strcmp(argv[i], "-o")) {
+			utils_doPrint = true;
+		}
+	}
+}
 
-	// Właściwy algorytm
+void utils_save_primes(bool* result, int m, int n) {
+	std::fstream file("primes.txt", std::ios::out);
+	for(int i = m; i <= n; i++) {
+		if(result[i - m]) {
+			file << i << std::endl;
+		}
+	}
+	file.close();
+}
 
-    bool *result = new bool[n - m + 1];
-    std::memset(result, true, (n - m + 1) * sizeof(bool));
+int main(int argc, char** argv) {
 
-    bool *basePrimes = new bool[(int)(sqrt(n) + 1)];
-    std::memset(basePrimes, true, (sqrt(n) + 1) * sizeof(bool));
+	int m = 2, n = pow(10, 8);
 
-    int limit = std::sqrt(n);
-    basePrimes[0] = basePrimes[1] = false;
+	utils_get_args(argc, argv, m, n);
 
-    double startTime = omp_get_wtime();
+	int limit = (int)std::sqrt(n);
 
-    for (int i = 2; i <= limit; i++)
-    {
-        for (int j = 2; j * j <= i; j++)
-        {
-            if (basePrimes[j] == true && i % j == 0)
-            {
-                basePrimes[i] = false;
-                break;
-            }
-        }
-    }
+	bool* basePrimes = new bool[limit + 1];
+	std::memset(basePrimes, true, limit + 1);
+	basePrimes[0] = basePrimes[1] = false;
+	
+	int range = n - m + 1;
+
+	bool* result = new bool[range];
+	std::memset(result, true, range * sizeof(bool));
+
+	double startWallTime = omp_get_wtime();
+	double startProcTime = clock();
+
+	for(int i = 2; i <= limit; i++) {
+		for(int j = 2; j * j <= i; j++) {
+			if(basePrimes[j] == true && i % j == 0) {
+				basePrimes[i] = false;
+				break;
+			}
+		}
+	}
 
 #pragma omp parallel for schedule(dynamic)
-    for (int i = m; i <= n; i++)
-    {
-        for (int j = 2; j * j <= i; j++)
-        {
-            if (basePrimes[j] == true && i % j == 0)
-            {
-                result[i - m] = false;
-                break;
-            }
-        }
-    }
+	for(int i = m; i <= n; i++) {
+		for(int j = 2; j * j <= i; j++) {
+			if(basePrimes[j] == true && i % j == 0) {
+				result[i - m] = false;
+				break;
+			}
+		}
+	}
 
-    double endTime = omp_get_wtime();
-    std::cout << "Czas obliczania liczb pierwszych w przedziale [m, n]: " << endTime - startTime << " sekund" << std::endl;
+	double endWallTime = omp_get_wtime();
+	double endProcTime = clock();
 
-    // Wypisywanie wyników do pliku, jeśli podano flagę -o
-    bool doPrint = false;
-    for (int i = 0; i < argc; i++)
-    {
-        if (!strcmp(argv[i], "-o"))
-        {
-            doPrint = true;
-            break;
-        }
-    }
+	std::cout << "Wall_clock_time: " << (endWallTime - startWallTime) << std::endl;
+	std::cout << "Processor_time: " << (endProcTime - startProcTime) / CLOCKS_PER_SEC << std::endl;
+	std::cout << "Primes_found: " << std::count(result, result + range, true) << std::endl;
 
-    if (doPrint)
-    {
-        std::fstream file("primes_2.txt", std::ios::out);
+	utils_save_primes(result, m, n);
 
-        for (int i = m; i <= n; i++)
-        {
-            if (result[i - m])
-            {
-                file << i << "\n";
-            }
-        }
+	delete[] result;
+	delete[] basePrimes;
 
-        file.close();
-
-        std::cout << "dlugosc listy: " << std::count(result, result + (n - m + 1), true) << std::endl;
-    }
-
-    delete[] result;
-    delete[] basePrimes;
-    return 0;
+	return 0;
 }

@@ -141,9 +141,6 @@
   <ItemGroup>
     <ClCompile Include="Projekt1_7_Sito_równoległe_domenowe.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Projekt1_1_Dzielenie_sekwencyjne\Projekt1_Dzielenie_sekwencyjne.vcxproj.filters" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

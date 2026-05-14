@@ -5,87 +5,86 @@
 #include <fstream>
 #include <cmath>
 #include <cstring>
-#include <algorithm>
 #include <omp.h>
+#include <algorithm>
+#include <time.h>
 
-int main(int argc, char **argv)
-{
-	// Ustalanie zakresu
+bool utils_doPrint = false;
+
+void utils_get_args(int argc, char** argv, int& m, int& n) {
+	for(int i = 0; i < argc; i++) {
+		if(!strcmp(argv[i], "-m") && i + 1 < argc)
+			m = std::atoi(argv[i + 1]);
+		if(!strcmp(argv[i], "-n") && i + 1 < argc)
+			n = std::atoi(argv[i + 1]);
+		if(!strcmp(argv[i], "-o")) {
+			utils_doPrint = true;
+		}
+	}
+}
+
+void utils_save_primes(bool* result, int m, int n) {
+	std::fstream file("primes.txt", std::ios::out);
+	for(int i = m; i <= n; i++) {
+		if(result[i - m]) {
+			file << i << std::endl;
+		}
+	}
+	file.close();
+}
+
+int main(int argc, char** argv) {
 	int m = 2, n = pow(10, 8);
 
-	for (int i = 0; i < argc; i++)
-	{
-		if (!strcmp(argv[i], "-m") && i + 1 < argc)
-			m = std::atoi(argv[i + 1]);
-		if (!strcmp(argv[i], "-n") && i + 1 < argc)
-			n = std::atoi(argv[i + 1]);
-	}
+	utils_get_args(argc, argv, m, n);
 
-	double startTime = omp_get_wtime();
-
-	// Właściwy algorytm
 	int limit = (int)std::sqrt(n);
-	bool *basePrimes = new bool[limit + 1];
+
+	bool* basePrimes = new bool[limit + 1];
 	std::memset(basePrimes, true, (limit + 1) * sizeof(bool));
 	basePrimes[0] = basePrimes[1] = false;
 
-	for (int i = 2; i * i <= limit; i++)
-	{
-		if (basePrimes[i])
-		{
-			for (int j = i * i; j <= limit; j += i)
-			{
+	int range = n - m + 1;
+
+	bool* result = new bool[range];
+	std::memset(result, true, range * sizeof(bool));
+
+	double startWallTime = omp_get_wtime();
+	double startProcTime = clock();
+
+	for(int i = 2; i * i <= limit; i++) {
+		if(basePrimes[i]) {
+			for(int j = i * i; j <= limit; j += i) {
 				basePrimes[j] = false;
 			}
 		}
 	}
 
-	// Sito dla przedziału [m, n]
-	int rangeSize = n - m + 1;
-	bool *result = new bool[rangeSize];
-	std::memset(result, true, rangeSize * sizeof(bool));
-
-	for (int i = 2; i <= limit; i++)
-	{
-		if (!basePrimes[i])
+	for(int i = 2; i <= limit; i++) {
+		if(!basePrimes[i])
 			continue;
 
 		int firstMultiple = (m / i) * i;
 
-		if (firstMultiple < m)
+		if(firstMultiple < m)
 			firstMultiple += i;
 
-		if (firstMultiple <= i)
+		if(firstMultiple <= i)
 			firstMultiple = i * 2;
 
-		for (int j = firstMultiple; j <= n; j += i)
-		{
+		for(int j = firstMultiple; j <= n; j += i) {
 			result[j - m] = false;
 		}
 	}
 
-	double endTime = omp_get_wtime();
-	std::cout << "Czas obliczania liczb pierwszych w przedziale [m, n]: " << endTime - startTime << " sekund" << std::endl;
+	double endWallTime = omp_get_wtime();
+	double endProcTime = clock();
 
-	// Wypisywanie wyników do pliku, jeśli podano flagę -o
-	bool doPrint = false;
-	for (int i = 0; i < argc; i++)
-	{
-		if (!strcmp(argv[i], "-o"))
-			doPrint = true;
-	}
+	std::cout << "Wall_clock_time: " << (endWallTime - startWallTime) << std::endl;
+	std::cout << "Processor_time: " << (endProcTime - startProcTime) / CLOCKS_PER_SEC << std::endl;
+	std::cout << "Primes_found: " << std::count(result, result + range, true) << std::endl;
 
-	if (doPrint)
-	{
-		std::fstream file("primes_3.txt", std::ios::out);
-		for (int i = m; i <= n; i++)
-		{
-			if (result[i - m])
-				file << i << '\n';
-		}
-		std::cout << "dlugsc listy: " << std::count(result, result + rangeSize, true) << std::endl;
-		file.close();
-	}
+	utils_save_primes(result, m, n);
 
 	delete[] basePrimes;
 	delete[] result;

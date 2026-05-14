@@ -38,16 +38,20 @@ int main(int argc, char** argv) {
 	int m = 2, n = pow(10, 8);
 
 	utils_get_args(argc, argv, m, n);
+	
+	int limit = (int)std::sqrt(n);
 
-	bool* basePrimes = new bool[(int)(sqrt(n) + 1)];
-	std::memset(basePrimes, true, (sqrt(n) + 1) * sizeof(bool));
+	bool* basePrimes = new bool[limit + 1];
+	std::memset(basePrimes, true, (limit + 1) * sizeof(bool));
 	basePrimes[0] = basePrimes[1] = false;
 
-	bool* result = new bool[n - m + 1];
-	std::memset(result, true, (n - m + 1) * sizeof(bool));
+	int range = n - m + 1;
 
-	double startWallTime = clock();
-	double startProcTime = omp_get_wtime();
+	bool* result = new bool[range];
+	std::memset(result, true, range * sizeof(bool));
+
+	double startWallTime = omp_get_wtime();
+	double startProcTime = clock();
 
 	for(int i = 2; i * i <= n; i++) {
 		for(int j = 2; j * j <= i; j++) {
@@ -67,16 +71,17 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	double endWallTime = clock();
-	double endProcTime = omp_get_wtime();
+	double endWallTime = omp_get_wtime();
+	double endProcTime = clock();
 
-	std::cout << "Wall_clock_time: " << (endWallTime - startWallTime) / CLOCKS_PER_SEC << std::endl;
-	std::cout << "Processor_time: " << (endProcTime - startProcTime) << std::endl;
-	std::cout << "Primes_found: " << std::count(result, result + (n - m + 1), true) << std::endl;
+	std::cout << "Wall_clock_time: " << (endWallTime - startWallTime)<< std::endl;
+	std::cout << "Processor_time: " << (endProcTime - startProcTime) / CLOCKS_PER_SEC << std::endl;
+	std::cout << "Primes_found: " << std::count(result, result + range, true) << std::endl;
 
 	utils_save_primes(result, m, n);
 
 	delete[] result;
 	delete[] basePrimes;
+
 	return 0;
 }
