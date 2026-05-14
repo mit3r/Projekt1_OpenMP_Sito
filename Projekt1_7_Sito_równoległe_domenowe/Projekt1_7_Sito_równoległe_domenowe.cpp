@@ -24,6 +24,7 @@ void utils_get_args(int argc, char** argv, int& m, int& n) {
 }
 
 void utils_save_primes(bool* result, int m, int n) {
+	if(!utils_doPrint) return;
 	std::fstream file("primes.txt", std::ios::out);
 	for(int i = m; i <= n; i++) {
 		if(result[i - m]) {
