@@ -19,4 +19,7 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Projekt1_1_Dzielenie_sekwencyjne\Projekt1_Dzielenie_sekwencyjne.vcxproj.filters" />
+  </ItemGroup>
 </Project>
