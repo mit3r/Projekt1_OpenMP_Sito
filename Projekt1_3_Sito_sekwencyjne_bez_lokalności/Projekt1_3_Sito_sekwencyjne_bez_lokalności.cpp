@@ -24,6 +24,7 @@ void utils_get_args(int argc, char** argv, int& m, int& n) {
 }
 
 void utils_save_primes(bool* result, int m, int n) {
+	if(!utils_doPrint) return;
 	std::fstream file("primes.txt", std::ios::out);
 	for(int i = m; i <= n; i++) {
 		if(result[i - m]) {
@@ -52,7 +53,7 @@ int main(int argc, char** argv) {
 	double startWallTime = omp_get_wtime();
 	double startProcTime = clock();
 
-	for(int i = 2; i * i <= limit; i++) {
+	for(int i = 2; i*i <= limit; i++) {
 		if(basePrimes[i]) {
 			for(int j = i * i; j <= limit; j += i) {
 				basePrimes[j] = false;
