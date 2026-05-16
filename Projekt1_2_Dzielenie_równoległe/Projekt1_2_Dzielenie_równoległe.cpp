@@ -11,38 +11,32 @@
 
 bool utils_doPrint = false;
 
-void utils_get_args(int argc, char** argv, int& m, int& n) {
+void utils_get_args(int argc, char** argv, int* m, int* n) {
 	for(int i = 0; i < argc; i++) {
 		if(!strcmp(argv[i], "-m") && i + 1 < argc)
-			m = std::atoi(argv[i + 1]);
+			*m = std::atoi(argv[i + 1]);
 		if(!strcmp(argv[i], "-n") && i + 1 < argc)
-			n = std::atoi(argv[i + 1]);
+			*n = std::atoi(argv[i + 1]);
 		if(!strcmp(argv[i], "-o")) {
 			utils_doPrint = true;
 		}
 	}
 }
 
-void utils_save_primes(bool* result, int m, int n) {
-	if(!utils_doPrint) return;
-	std::fstream file("primes.txt", std::ios::out);
-	for(int i = m; i <= n; i++) {
-		if(result[i - m]) {
-			file << i << std::endl;
-		}
-	}
-	file.close();
+void utils_print_primes(bool* result, int m, int n) {
+	if(!utils_doPrint) std::cout << std::count(result, result + (n - m + 1), true);
+	else for(int i = m; i <= n; i++) if(result[i - m]) std::cout << i << std::endl;
 }
 
 int main(int argc, char** argv) {
 	int m = 2, n = pow(10, 8);
 
-	utils_get_args(argc, argv, m, n);
+	utils_get_args(argc, argv, &m, &n);
 
-	int limit = (int)std::sqrt(n);
+	int sqrt_n = (int)std::sqrt(n);
 
-	bool* basePrimes = new bool[limit + 1];
-	std::memset(basePrimes, true, (limit + 1) * sizeof(bool));
+	bool* basePrimes = new bool[sqrt_n+1];
+	std::memset(basePrimes, true, (sqrt_n+1) * sizeof(bool));
 	basePrimes[0] = basePrimes[1] = false;
 
 	int range = n - m + 1;
@@ -50,11 +44,8 @@ int main(int argc, char** argv) {
 	bool* result = new bool[range];
 	std::memset(result, true, range * sizeof(bool));
 
-	double startWallTime = omp_get_wtime();
-	double startProcTime = clock();
-
-	for(int i = 2; i * i <= n; i++) {
-		for(int j = 2; j * j <= i; j++) {
+	for(int i = 2; i <= sqrt_n; i++) {
+		for(int j = 2; j <= (int)std::sqrt(i); j++) {
 			if(basePrimes[j] == true && i % j == 0) {
 				basePrimes[i] = false;
 				break;
@@ -62,25 +53,17 @@ int main(int argc, char** argv) {
 		}
 	}
 
-#pragma omp parallel for schedule(dynamic)
-		for(int i = m; i <= n; i++) {
-			for(int j = 2; j * j <= i; j++) {
-				if(basePrimes[j] == true && i % j == 0) {
-					result[i - m] = false;
-					break;
-				}
+	#pragma omp parallel for schedule(dynamic)
+	for(int i = m; i <= n; i++) {
+		for(int j = 2; j <= (int)std::sqrt(i); j++) {
+			if(basePrimes[j] == true && i % j == 0) {
+				result[i - m] = false;
+				break;
 			}
 		}
-	
+	}
 
-	double endWallTime = omp_get_wtime();
-	double endProcTime = clock();
-
-	std::cout << "Wall_clock_time: " << (endWallTime - startWallTime) << std::endl;
-	std::cout << "Processor_time: " << (endProcTime - startProcTime) / CLOCKS_PER_SEC << std::endl;
-	std::cout << "Primes_found: " << std::count(result, result + range, true) << std::endl;
-
-	utils_save_primes(result, m, n);
+	utils_print_primes(result, m, n);
 
 	delete[] result;
 	delete[] basePrimes;
