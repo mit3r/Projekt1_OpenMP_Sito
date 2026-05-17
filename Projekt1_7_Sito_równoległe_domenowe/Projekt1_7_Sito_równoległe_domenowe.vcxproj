@@ -24,6 +24,7 @@
     <ProjectGuid>{f42d8efc-7759-4773-a025-154ce7214e10}</ProjectGuid>
     <RootNamespace>Projekt17Sitorównoległedomenowe</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>K5_Sito_równoległe_domenowe</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +141,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_7_Sito_równoległe_domenowe.cpp" />
+    <ClCompile Include="K5_Sito_równoległe_domenowe.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

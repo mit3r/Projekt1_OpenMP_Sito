@@ -24,6 +24,7 @@
     <ProjectGuid>{8eac7305-99b7-47d1-9526-d239f0bd546b}</ProjectGuid>
     <RootNamespace>Projekt14Sitosekwencyjnezlokalnoscia</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>K3a_Sito_sekwencyjne_z_lokalnoscia</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,7 +140,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_4_Sito_sekwencyjne_z_lokalnoscia.cpp" />
+    <ClCompile Include="K3a_Sito_sekwencyjne_z_lokalnoscia.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

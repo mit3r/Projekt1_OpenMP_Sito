@@ -24,6 +24,7 @@
     <ProjectGuid>{d85dd78f-a054-4238-9355-4c3cc6f18409}</ProjectGuid>
     <RootNamespace>Projekt15Sitorównoległefunkcyjnezapis</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>K4_Sito_równoległe_funkcyjne_zapis</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +141,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_5_Sito_równoległe_funkcyjne_zapis.cpp" />
+    <ClCompile Include="K4_Sito_równoległe_funkcyjne_zapis.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

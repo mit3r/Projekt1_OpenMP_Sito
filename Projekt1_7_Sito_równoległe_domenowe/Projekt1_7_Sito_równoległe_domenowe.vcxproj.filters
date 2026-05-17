@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_7_Sito_równoległe_domenowe.cpp">
+    <ClCompile Include="K5_Sito_równoległe_domenowe.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>

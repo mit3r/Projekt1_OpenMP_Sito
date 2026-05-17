@@ -24,6 +24,7 @@
     <ProjectGuid>{4ea4f8dd-f1fa-4fae-b142-6f8f56d93d23}</ProjectGuid>
     <RootNamespace>Projekt12Dzielenierównoległe</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>K2_Dzielenie_równoległe</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -141,7 +142,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_2_Dzielenie_równoległe.cpp" />
+    <ClCompile Include="K2_Dzielenie_równoległe.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

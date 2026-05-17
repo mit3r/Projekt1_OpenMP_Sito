@@ -24,7 +24,7 @@
     <ProjectGuid>{3147f108-bf5a-47d2-bd34-510a98194815}</ProjectGuid>
     <RootNamespace>Projekt1Dzieleniesekwencyjne</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Projekt1_1_Dzielenie_sekwencyjne</ProjectName>
+    <ProjectName>K1_Dzielenie_sekwencyjne</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +140,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_1_Dzielenie_sekwencyjne.cpp" />
+    <ClCompile Include="K1_Dzielenie_sekwencyjne.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

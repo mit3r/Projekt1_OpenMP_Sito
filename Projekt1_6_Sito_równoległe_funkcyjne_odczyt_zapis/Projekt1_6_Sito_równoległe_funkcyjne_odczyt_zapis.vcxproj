@@ -24,6 +24,7 @@
     <ProjectGuid>{29c20a4e-2b67-439a-97d5-29cc06a9fa99}</ProjectGuid>
     <RootNamespace>Projekt16Sitorównoległefunkcyjneodczytzapis</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>K4a_Sito_równoległe_funkcyjne_odczyt_zapis</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +141,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_6_Sito_równoległe_funkcyjne_odczyt_zapis.cpp" />
+    <ClCompile Include="K4a_Sito_równoległe_funkcyjne_odczyt_zapis.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

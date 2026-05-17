@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Projekt1_3_Sito_sekwencyjne_bez_lokalności.cpp">
+    <ClCompile Include="K3_Sito_sekwencyjne_bez_lokalności.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
