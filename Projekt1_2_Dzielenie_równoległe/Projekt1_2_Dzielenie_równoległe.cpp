@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	#pragma omp parallel for schedule(dynamic)
+	#pragma omp parallel for schedule(static)
 	for(int i = m; i <= n; i++) {
 		for(int j = 2; j <= (int)std::sqrt(i); j++) {
 			if(basePrimes[j] == true && i % j == 0) {

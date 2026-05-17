@@ -56,11 +56,11 @@ int main(int argc, char** argv) {
 
 	const int blockSize = 48 * 1024;
 
-	#pragma omp parallel for schedule(dynamic)
+	#pragma omp parallel for schedule(static)
 	for(int low = m; low <= n; low += blockSize) {
 		int high = std::min(low + blockSize - 1, n);
 
-		for(int i = 2; i <= limit; i++) {
+		for(int i = 2; i <= std::sqrt(high); i++) {
 			if(basePrimes[i] == false)
 				continue;
 

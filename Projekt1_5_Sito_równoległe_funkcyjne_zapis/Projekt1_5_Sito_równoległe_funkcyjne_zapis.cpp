@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	const int blockSize = 12 * 1024;
+	const int blockSize = 48 * 1024;
 	
 	#pragma omp parallel for schedule(dynamic)
 	for(int low = m; low <= n; low += blockSize) {
