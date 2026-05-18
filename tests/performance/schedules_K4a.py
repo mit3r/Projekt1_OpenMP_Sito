@@ -1,4 +1,5 @@
 import _vtune_utils as vt
+import math
 
 variant: vt.VariantName = "k4a"
 # vt.print_title(variant)
@@ -24,16 +25,9 @@ tests: list[tuple[vt.OMPSchedule, vt.OMPChunkSize]] = [
   ("guided", 100),
   ("guided", 1000),
   ("guided", 5000),
-
-  # ("dynamic", 10000),
-  # ("dynamic", 15000),
-  # ("dynamic", 20000),
-  # ("guided", 10000),
-  # ("guided", 15000),
-  # ("guided", 20000),
 ]
 
-times: int = 1
+times: int = 10
 for schedule, chunk_size in tests:
   label = f" {schedule}-{chunk_size}"
 
@@ -44,4 +38,4 @@ for schedule, chunk_size in tests:
 
   avg, deviations = vt.avg_deviation(results)
 
-  vt.print_csv_row(label, avg, deviations)
+  vt.print_csv_row(schedule, chunk_size, avg, deviations)

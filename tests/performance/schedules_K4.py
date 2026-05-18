@@ -27,7 +27,7 @@ tests: list[tuple[vt.OMPSchedule, vt.OMPChunkSize]] = [
   ("guided", 5000),
 ]
 
-times: int = 1
+times: int = 10
 for schedule, chunk_size in tests:
   label = f" {schedule}-{chunk_size}"
 
@@ -38,4 +38,4 @@ for schedule, chunk_size in tests:
 
   avg, deviations = vt.avg_deviation(results)
 
-  vt.print_csv_row(label, avg, deviations)
+  vt.print_csv_row(schedule, chunk_size, avg, deviations)

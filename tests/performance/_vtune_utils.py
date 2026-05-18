@@ -111,7 +111,7 @@ def avg_deviation(results: list[float]) -> tuple[float, float]:
 def print_title(variant: VariantName) -> None:
   print(f"Testing variant: {variant}")
 
-def print_csv_row(*args: str | int | float) -> None:
+def print_csv_row(*args: None | str | int | float) -> None:
   print("; ".join(str(arg) for arg in args))
 
 def print_date_time() -> None:

@@ -39,37 +39,40 @@ int main(int argc, char** argv) {
 
 	int sqrt_n = (int)std::sqrt(n);
 
-	bool* basePrimes = new bool[sqrt_n + 1];
-	std::memset(basePrimes, true, sqrt_n + 1);
-	basePrimes[0] = basePrimes[1] = false;
-
 	int range = n - m + 1;
 
+	bool* basePrimes = new bool[sqrt_n + 1];
 	bool* result = new bool[range];
-	std::memset(result, true, range * sizeof(bool));
 
-	for(int i = 2; i * i <= sqrt_n; i++) {
-		if(basePrimes[i]) {
-			for(int j = i * i; j <= sqrt_n; j += i) {
-				basePrimes[j] = false;
+	for(int k = 0; k < times; k++) {
+		std::memset(basePrimes, true, sqrt_n + 1);
+		std::memset(result, true, range * sizeof(bool));
+		basePrimes[0] = basePrimes[1] = false;
+
+
+		for(int i = 2; i * i <= sqrt_n; i++) {
+			if(basePrimes[i]) {
+				for(int j = i * i; j <= sqrt_n; j += i) {
+					basePrimes[j] = false;
+				}
 			}
 		}
-	}
 
-	for(int low = m; low <= n; low += blockSize) {
-		int high = std::min(low + blockSize - 1, n);
+		for(int low = m; low <= n; low += blockSize) {
+			int high = std::min(low + blockSize - 1, n);
 
-		for(int i = 2; i <= sqrt_n; i++) {
-			if(basePrimes[i] == false)
-				continue;
+			for(int i = 2; i <= sqrt_n; i++) {
+				if(basePrimes[i] == false)
+					continue;
 
-			int firstMultiple = (low + i - 1) / i * i;
+				int firstMultiple = (low + i - 1) / i * i;
 
-			if(firstMultiple == i) firstMultiple += i;
-			if(firstMultiple < i * i) firstMultiple = i * i;
+				if(firstMultiple == i) firstMultiple += i;
+				if(firstMultiple < i * i) firstMultiple = i * i;
 
-			for(int j = firstMultiple; j <= high; j += i) {
-				result[j - m] = false;
+				for(int j = firstMultiple; j <= high; j += i) {
+					result[j - m] = false;
+				}
 			}
 		}
 	}
