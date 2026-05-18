@@ -33,9 +33,9 @@ void utils_print_primes(bool* result, int m, int n) {
 
 int main(int argc, char** argv) {
 	int m = 2, n = pow(10, 8);
-	int times = 1;
+	int times = 1, blockSize = 48 * 1024;
 
-	utils_get_args(argc, argv, &m, &n, &times, nullptr);
+	utils_get_args(argc, argv, &m, &n, &times, &blockSize);
 	
 	int sqrt_n = (int)std::sqrt(n);
 	int range = n - m + 1;

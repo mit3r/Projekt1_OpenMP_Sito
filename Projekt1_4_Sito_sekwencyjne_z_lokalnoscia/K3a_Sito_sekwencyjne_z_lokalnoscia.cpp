@@ -32,7 +32,6 @@ void utils_print_primes(bool* result, int m, int n) {
 }
 
 int main(int argc, char** argv) {
-
 	int m = 2, n = pow(10, 8);
 	int times = 1, blockSize = 48 * 1024;
 

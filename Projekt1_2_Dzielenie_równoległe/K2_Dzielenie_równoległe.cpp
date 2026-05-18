@@ -11,8 +11,6 @@
 
 bool utils_doPrint = false;
 
-bool utils_doPrint = false;
-
 void utils_get_args(int argc, char** argv, int* m, int* n, int* times, int* blockSize) {
 	for(int i = 0; i < argc; i++) {
 		if(!strcmp(argv[i], "-m") && i + 1 < argc)
@@ -35,9 +33,9 @@ void utils_print_primes(bool* result, int m, int n) {
 
 int main(int argc, char** argv) {
 	int m = 2, n = pow(10, 8);
-	int times = 1;
+	int times = 1, blockSize = 48 * 1024;
 
-	utils_get_args(argc, argv, &m, &n, &times, nullptr);
+	utils_get_args(argc, argv, &m, &n, &times, &blockSize);
 
 	int sqrt_n = (int)std::sqrt(n);
 	int range = n - m + 1;
