@@ -1,0 +1,6 @@
+Number of primes in files:
+
+primes2^7.txt: 31
+primes2^20.txt: 82025
+primes2^30.txt: 54400028
+primes10^8.txt: 5761455
