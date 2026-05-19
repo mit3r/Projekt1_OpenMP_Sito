@@ -3,44 +3,30 @@ import numpy as np
 import pandas as pd
 from io import StringIO
 
-# 1. Dane wejściowe
-data = open("outputs_2/blocks_K3a_t20.csv", "r", encoding="utf-16").read()
-times = 20
-
-# 2. Parsowanie danych do DataFrame
-df = pd.read_csv(
-    StringIO(data),
-    sep=';',
-    header=None,
-    names=['block_size_bytes', 'data_range', 'time', 'std'],
-    skipinitialspace=True,
-)
-
-df['block_size_bytes'] = df['block_size_bytes'].astype(int)
-df['data_range'] = df['data_range'].str.strip()
-df['time'] = pd.to_numeric(df['time'].astype(str).str.replace(',', '.', regex=False))
-df['std'] = pd.to_numeric(df['std'].astype(str).str.replace(',', '.', regex=False))
-df['block_size_kb'] = df['block_size_bytes'] / 1024
-
-# 3. Obliczanie liczby przetworzonych liczb na sekundę
-ranges_to_div = {
+ranges_to_int = {
     "min_max": 10e8 - 2 + 1,
     "half_max": 10e8 - 10e8 // 2 + 1,
     "min_half": 10e8 // 2 - 2 + 1,
 }
 
-# W milionach liczb na sekundę
-def calculate_speed(row: pd.Series) -> float:
-    total_numbers = ranges_to_div.get(row['data_range'], None)
-    return (total_numbers / row['time']) / 1e6
+data = open("outputs_3/K3a_blocks.csv", "r", encoding="utf-8").read()
 
-df['speed'] = df.apply(calculate_speed, axis=1)
+df = pd.read_csv(
+    StringIO(data),
+    sep=';',
+    header=0,
+    names=["variant", "schedule", "chunk_size", "block_size", "range_name", "avg_time", "std_dev", "loops", "trials"],
+    skipinitialspace=True,
+)
 
-df['std'] = df['std'] / df['time'] * df['speed']
+df["avg_speed"] = df.apply(lambda row: (ranges_to_int.get(row["range_name"], None) * row["loops"] / row["avg_time"]) / 1e6, axis=1)
 
-# 3. Konfiguracja struktury wykresu
+df["std_speed"] = df.apply(lambda row: row["std_dev"] / row["avg_time"] * row["avg_speed"], axis=1)
+
+df["block_size_kb"] = df["block_size"].apply(lambda x: int(x) // 1024 if pd.notna(x) else None)
+
 block_order = sorted(df['block_size_kb'].unique())
-range_order = df['data_range'].drop_duplicates().tolist()
+range_order = df['range_name'].drop_duplicates().tolist()
 colors = {
     'min_max': '#1f77b4',
     'half_max': '#ff7f0e',
@@ -54,20 +40,17 @@ display_labels = {
 
 fig, ax = plt.subplots(figsize=(12, 6), dpi=150)
 
-# Pozycje na osi X i szerokość słupków
 x = np.arange(len(block_order))
 bar_width = 0.22
 
-# 4. Rysowanie słupków z błędami
 for i, data_range in enumerate(range_order):
-    sub_df = df[df['data_range'] == data_range].set_index('block_size_kb').reindex(block_order).reset_index()
+    sub_df = df[df['range_name'] == data_range].set_index('block_size_kb').reindex(block_order).reset_index()
     offset = (i - (len(range_order) - 1) / 2) * bar_width
-
     bars = ax.bar(
         x + offset,
-        sub_df['speed'],
+        sub_df['avg_speed'],
         bar_width,
-        yerr=sub_df['std'],
+        yerr=sub_df['std_speed'],
         label=display_labels.get(data_range, data_range),
         color=colors.get(data_range, None),
         capsize=5,
@@ -76,7 +59,6 @@ for i, data_range in enumerate(range_order):
         error_kw={'elinewidth': 1.2},
     )
 
-    # Automatyczne dodawanie wartości liczbowych nad słupkami
     ax.bar_label(
         bars,
         fmt='%.3f',
@@ -87,10 +69,9 @@ for i, data_range in enumerate(range_order):
         rotation=90,
     )
 
-# 5. Ograniczenia, podpisy i estetyka
-ax.set_ylim(150, 450)  # Zakres prędkości z pewnym marginesem
+ax.set_ylim(0, 10_000)
 ax.set_xticks(x)
-ax.set_xticklabels([f'{size:g}' for size in block_order], fontsize=10)
+ax.set_xticklabels([f'{size:g} KB' for size in block_order], fontsize=10)
 
 ax.set_title('Kod K3a - porównanie prędkości przetwarzania w zależności od rozmiaru bloku i zakresu danych', fontsize=14, pad=20, weight='bold')
 ax.set_xlabel('Wielkość bloku [KB]', fontsize=12, labelpad=10)

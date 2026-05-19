@@ -3,20 +3,21 @@ import numpy as np
 import pandas as pd
 
 # 1. Dane wejściowe
-data = open("outputs_2/mix_K5_t10_avg5.csv", "r", encoding="utf-8").read()
-times = 10
+data = open("outputs_3/K5_mix.csv", "r", encoding="utf-8").read()
 
 # 2. Parsowanie danych do DataFrame
-rows = [line.split(';') for line in data.strip().split('\n')]
-df = pd.DataFrame(rows, columns=['name', 'type', 'chunk_size', 'block_size', 'time', 'std'])
+from io import StringIO
+df = pd.read_csv(
+    StringIO(data),
+    sep=';',
+    header=0,
+    names=["name", "type", "chunk_size", "block_size", "range_name", "time", "std", "loops", "trials"],
+    skipinitialspace=True,
+)
 
 # Czyszczenie danych (stripping i konwersja typów)
-df['name'] = df['name'].str.strip()
-df['type'] = df['type'].str.strip()
-df['chunk_size'] = df['chunk_size'].str.strip()
-df['block_size'] = pd.to_numeric(df['block_size'].str.strip())
-df['time'] = pd.to_numeric(df['time'].str.strip())
-df['std'] = pd.to_numeric(df['std'].str.strip())
+df['type'] = df['type'].astype(str).str.strip()
+df['chunk_size'] = df['chunk_size'].astype(str).str.strip().replace({"nan": "None", "": "None"}).str.replace(r"\.0$", "", regex=True)
 
 # 3. Obliczanie liczby przetworzonych liczb na sekundę
 ranges_to_div = {
@@ -27,8 +28,8 @@ ranges_to_div = {
 
 # W milionach liczb na sekundę
 def calculate_speed(row: pd.Series) -> float:
-    total_numbers = ranges_to_div.get("min_max", None)
-    return (total_numbers / row['time']) / 1e6
+    total_numbers = ranges_to_div.get(row['range_name'], 10e8 - 2 + 1)
+    return (total_numbers * row['loops'] / row['time']) / 1e6
 
 df['speed'] = df.apply(calculate_speed, axis=1)
 

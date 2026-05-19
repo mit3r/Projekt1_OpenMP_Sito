@@ -49,16 +49,20 @@ def create_vtune_command(
     type: AnalisisType,
     times: int = 2,
     postfix: str = "",
-) -> list[str]:
+    block_size: BlockSize = None,
+) -> tuple[list[str], str]:
   m, n = ranges[range_name]
   name = f'{variant}_{range_name}_{type}_{times}_{postfix}'
   exe_path = os.path.abspath(variants[variant])
   output_path = os.path.abspath(os.path.join(output_dir, name))
-  return [
+  cmd = [
     "vtune", "-collect", type,
     "-r", output_path, exe_path, "-m", str(m), "-n", str(n),
     "-t", str(times),
   ]
+  if block_size is not None:
+      cmd.extend(["-b", str(block_size)])
+  return cmd, output_path
 
 def create_normal_command(
     variant: VariantName,
@@ -85,7 +89,7 @@ def create_normal_env(
   
   return f"$env:OMP_SCHEDULE='{omp_schedule},{omp_chunk_size}';"
 
-def measure(command: list[str], env_vars: dict[str, str] | None = None) -> tuple[float, int]:
+def measure(command: list[str], env_vars: dict[str, str] | None = None) -> float:
 
   result = None
   my_env = os.environ.copy()
@@ -107,8 +111,7 @@ def measure(command: list[str], env_vars: dict[str, str] | None = None) -> tuple
 
   if result is None: raise RuntimeError("Failed to execute the command.")
 
-  primes = int(result.stdout.strip())
-  return round(end_time - start_time, ndigits=3), primes
+  return round(end_time - start_time, ndigits=3)
 
 def avg_deviation(results: list[float]) -> tuple[float, float]:
   avg = sum(results) / len(results)
@@ -120,6 +123,22 @@ def print_title(variant: VariantName) -> None:
 
 def print_csv_row(*args: None | str | int | float) -> None:
   print("; ".join(str(arg) for arg in args))
+
+def print_test_header() -> None:
+  print_csv_row("variant", "schedule", "chunk_size", "block_size", "range_name", "avg_time", "std_dev", "loops", "trials")
+
+def print_test_row(
+    variant: VariantName,
+    schedule: OMPSchedule,
+    chunk_size: OMPChunkSize,
+    block_size: BlockSize,
+    range_name: RangeName,
+    avg_time: float,
+    std_dev: float,
+    loops: int,
+    trials: int
+) -> None:
+  print_csv_row(variant, schedule, chunk_size, block_size, range_name, avg_time, std_dev, loops, trials)
 
 def print_date_time() -> None:
   now = datetime.now()

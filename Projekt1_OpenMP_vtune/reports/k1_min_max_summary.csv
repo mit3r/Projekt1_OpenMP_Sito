@@ -1,0 +1,21 @@
+Hierarchy Level,Metric Name,Metric Value
+0,Elapsed Time,69.417144
+1,CPU Time,67.568276
+1,CPI Rate,0.746718
+1,Total Thread Count,5
+1,Paused Time,0.0
+0,Collection and Platform Info,
+1,Application Command Line,C:\Users\Franciszek\source\repos\Projekt1_OpenMP_Sito\x64\Release\K1_Dzielenie_sekwencyjne.exe "-m" "2" "-n" "100000000" "-t" "1" 
+1,Operating System,Microsoft Windows 11
+1,Computer Name,Laptop-Franek
+1,Result Size,173076674
+1,Collection start time,22:08:20 19/05/2026 UTC
+1,Collection stop time,22:09:30 19/05/2026 UTC
+1,Collector Type,Event-based sampling driver
+1,CPU,
+2,Name,Intel(R) microarchitecture code named Tigerlake H
+2,Frequency,2688001094
+2,Logical CPU Count,12
+2,Cache Allocation Technology,
+3,Level 2 capability,not detected
+3,Level 3 capability,not detected

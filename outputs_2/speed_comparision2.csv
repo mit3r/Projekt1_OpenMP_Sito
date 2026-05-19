@@ -1,0 +1,13 @@
+variant; range; schedule; chunk_size; block_size; primes; avg_time; std_dev; times
+k2; min_max; dynamic; 1000; None; 5761455; 14.35; 0.235; 2
+k2; half_max; dynamic; 1000; None; 2760321; 9.307; 0.069; 2
+k2; min_half; dynamic; 1000; None; 3001134; 4.75; 0.046; 2
+k3; min_max; None; None; 1048576; 5761455; 18.794; 1.96; 20
+k3; half_max; None; None; 1048576; 2760321; 8.646; 0.936; 20
+k3; min_half; None; None; 1048576; 3001134; 8.554; 0.831; 20
+k4; min_max; guided; 1; None; 99999999; 3.038; 0.105; 1000
+k4; half_max; guided; 1; None; 50000001; 1.503; 0.005; 1000
+k4; min_half; guided; 1; None; 49999999; 1.599; 0.091; 1000
+k4a; min_max; guided; 1; None; 99999999; 3.196; 0.049; 1000
+k4a; half_max; guided; 1; None; 50000001; 1.59; 0.048; 1000
+k4a; min_half; guided; 1; None; 49999999; 1.579; 0.026; 1000

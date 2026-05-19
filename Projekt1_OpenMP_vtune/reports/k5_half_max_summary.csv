@@ -1,0 +1,21 @@
+Hierarchy Level,Metric Name,Metric Value
+0,Elapsed Time,1.289483
+1,CPU Time,14.423090
+1,CPI Rate,0.602701
+1,Total Thread Count,14
+1,Paused Time,0.0
+0,Collection and Platform Info,
+1,Application Command Line,C:\Users\Franciszek\source\repos\Projekt1_OpenMP_Sito\x64\Release\K5_Sito_równoległe_domenowe.exe "-m" "50000000" "-n" "100000000" "-t" "100" "-b" "131072" 
+1,Operating System,Microsoft Windows 11
+1,Computer Name,Laptop-Franek
+1,Result Size,44307758
+1,Collection start time,22:18:22 19/05/2026 UTC
+1,Collection stop time,22:18:24 19/05/2026 UTC
+1,Collector Type,Event-based sampling driver
+1,CPU,
+2,Name,Intel(R) microarchitecture code named Tigerlake H
+2,Frequency,2688002371
+2,Logical CPU Count,12
+2,Cache Allocation Technology,
+3,Level 2 capability,not detected
+3,Level 3 capability,not detected

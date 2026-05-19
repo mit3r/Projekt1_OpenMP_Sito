@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
         std::memset(result, true, range * sizeof(bool));
         basePrimes[0] = basePrimes[1] = false;
 
-        for(int i = 2; i <= pow(n, 1 / 4); i++) {
+        for(int i = 2; i <= pow(n, 0.25); i++) {
             if(basePrimes[i] == true) {
                 for(int j = i * i; j <= sqrt_n; j += i) {
                     basePrimes[j] = false;

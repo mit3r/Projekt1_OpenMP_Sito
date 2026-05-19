@@ -1,34 +1,39 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from io import StringIO
 
-# 1. Dane wejściowe
-data = open("outputs_2/schedules_K2_t1_min_max_avg5.csv", "r", encoding="utf-16").read()
-times = 1
-
-# 2. Parsowanie danych do DataFrame
-rows = [line.split(';') for line in data.strip().split('\n')]
-df = pd.DataFrame(rows, columns=['type', 'chunk_size', 'time', 'std'])
-df['type'] = df['type'].str.strip()
-df['chunk_size'] = df['chunk_size'].str.strip()
-df['time'] = df['time'].astype(float)
-df['std'] = df['std'].astype(float)
-
-# 3. Obliczanie liczby przetworzonych liczb na sekundę
-ranges_to_div = {
+ranges_to_int = {
     "min_max": 10e8 - 2 + 1,
     "half_max": 10e8 - 10e8 // 2 + 1,
     "min_half": 10e8 // 2 - 2 + 1,
 }
 
-# W milionach liczb na sekundę
-def calculate_speed(row: pd.Series) -> float:
-    total_numbers = ranges_to_div.get("min_max", None)
-    return (total_numbers / row['time']) / 1e6
+data = open("outputs_3/K2_schedules.csv", "r", encoding="utf-8").read()
 
-df['speed'] = df.apply(calculate_speed, axis=1)
+df = pd.read_csv(
+    StringIO(data),
+    sep=';',
+    header=0,
+    names=["variant", "schedule", "chunk_size", "block_size", "range_name", "avg_time", "std_dev", "loops", "trials"],
+    skipinitialspace=True,
+    keep_default_na=False,
+)
 
-df['std'] = df['std'] / df['time'] * df['speed']
+df["schedule"] = df["schedule"].astype(str).str.strip()
+df["chunk_size"] = (
+    df["chunk_size"]
+    .astype(str)
+    .str.strip()
+    .replace({"nan": "None", "": "None"})
+    .str.replace(r"\.0$", "", regex=True)
+)
+
+for col in ["block_size", "avg_time", "std_dev", "loops", "trials"]:
+    df[col] = pd.to_numeric(df[col], errors="coerce")
+
+df["avg_speed"] = df.apply(lambda row: (ranges_to_int.get(row["range_name"], None) * row["loops"] / row["avg_time"]) / 1e6, axis=1)
+df["std_speed"] = df.apply(lambda row: row["std_dev"] / row["avg_time"] * row["avg_speed"], axis=1)
 
 # 3. Konfiguracja struktury grup i wykresu
 chunk_order = ['None', '1', '10', '100', '1000', '5000']
@@ -43,14 +48,14 @@ bar_width = 0.25
 
 # 4. Rysowanie słupków z błędami
 for i, t in enumerate(types):
-    sub_df = df[df['type'] == t].set_index('chunk_size').reindex(chunk_order).reset_index()
+    sub_df = df[df['schedule'] == t].set_index('chunk_size').reindex(chunk_order).reset_index()
     
     # Obliczanie przesunięcia dla każdego typu, aby stały obok siebie
     pos = x + (i - 1) * bar_width
     
     bars = ax.bar(
-        pos, sub_df['speed'], bar_width, 
-        yerr=sub_df['std'], label=t, color=colors[t],
+        pos, sub_df['avg_speed'], bar_width, 
+        yerr=sub_df['std_speed'], label=t, color=colors[t],
         capsize=4, edgecolor='black', linewidth=0.5, error_kw={'elinewidth': 1.2}
     )
     
@@ -61,7 +66,7 @@ for i, t in enumerate(types):
     )
 
 # 5. Ograniczenia, podpisy i estetyka
-ax.set_ylim(60, 160) # Ograniczenie osi Y do 6 sekund
+ax.set_ylim(0, max(df['avg_speed'] * 1.2)) # Ograniczenie osi Y na 20% powyżej maksymalnej prędkości
 ax.set_xticks(x)
 ax.set_xticklabels(chunk_order, fontsize=11)
 
