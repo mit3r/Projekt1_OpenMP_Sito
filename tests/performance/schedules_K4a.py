@@ -4,7 +4,7 @@ import math
 variant: vt.VariantName = "k4a"
 # vt.print_title(variant)
 # print("Testowanie podziałów pracy")
-# print("Średnia z 3 pomiarów")
+# print("Średnia z 5 pomiarów")
 
 tests: list[tuple[vt.OMPSchedule, vt.OMPChunkSize]] = [
   ("static", None),
@@ -28,14 +28,22 @@ tests: list[tuple[vt.OMPSchedule, vt.OMPChunkSize]] = [
 ]
 
 times: int = 10
+trials = 5
+
+vt.print_csv_row("variant", "schedule", "chunk", "primes", "avg_time", "std_dev", "times", "trials")
 for schedule, chunk_size in tests:
-  label = f" {schedule}-{chunk_size}"
 
-  results = [ vt.measure(
-    vt.create_normal_command(variant, "min_max", times),
-    vt.create_python_env(schedule, chunk_size)
-  ) for _ in range(3) ]
+  clocks = []
+  primes = None
 
-  avg, deviations = vt.avg_deviation(results)
+  for _ in range(trials):
+    clock, primes_count = vt.measure(
+      vt.create_normal_command(variant, "min_max", times),
+      vt.create_python_env(schedule, chunk_size)
+    )
+    clocks.append(clock)
+    primes = primes_count
 
-  vt.print_csv_row(schedule, chunk_size, avg, deviations)
+  avg, deviations = vt.avg_deviation(clocks)
+
+  vt.print_csv_row(variant, schedule, chunk_size, primes, avg, deviations, times, trials)

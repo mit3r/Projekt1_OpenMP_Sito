@@ -38,7 +38,6 @@ int main(int argc, char** argv) {
     utils_get_args(argc, argv, &m, &n, &times, &blockSize);
 
     int sqrt_n = (int)std::sqrt(n);
-
 	int range = n - m + 1;
 
     bool* basePrimes = new bool[sqrt_n + 1];
@@ -57,7 +56,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        #pragma omp parallel for schedule(dynamic)
+        #pragma omp parallel for schedule(runtime)
         for(int low = m; low <= n; low += blockSize) {
             int high = std::min(low + blockSize - 1, n);
 

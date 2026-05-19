@@ -7,12 +7,12 @@ variant: vt.VariantName = "k3a"
 # print("Średnia z 3 pomiarów")
 
 tests: list[int] = [
-  # 12 * 1024,
-  # 24 * 1024,
-  # 48 * 1024,
-  # 64 * 1024,
-  # 128 * 1024,
-  # 256 * 1024,
+  12 * 1024,
+  24 * 1024,
+  48 * 1024,
+  64 * 1024,
+  128 * 1024,
+  256 * 1024,
   512 * 1024,
   1024 * 1024,
   2048 * 1024,
@@ -20,12 +20,24 @@ tests: list[int] = [
 ]
 
 times: int = 20
+trials = 5
+
+vt.print_csv_row("variant","block_size", "range", "primes", "avg_time", "std_dev", "times", "trials")
 for block_size in tests:
+  for test_range in vt.ranges:
 
-  results = [ vt.measure(
-    vt.create_normal_command(variant, "min_max", times, block_size),
-  ) for _ in range(3) ]
+    clock = []
+    primes = None
+    for _ in range(trials):
+      time, prime_count = vt.measure(
+        vt.create_normal_command(variant, test_range, times, block_size),
+      )
 
-  avg, deviations = vt.avg_deviation(results)
+      if prime_count is None: raise RuntimeError("Failed to get prime count from the executable output.")
 
-  vt.print_csv_row(block_size, avg, deviations)
+      clock.append(time)
+      primes = prime_count * times
+
+    avg, deviations = vt.avg_deviation(clock)
+
+    vt.print_csv_row(variant, block_size, test_range, primes, avg, deviations, times, trials)

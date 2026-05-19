@@ -1,6 +1,7 @@
 import math
 import subprocess
 import os
+import re
 from time import time
 from typing import Callable, Literal
 from unittest import result
@@ -11,8 +12,9 @@ from datetime import datetime
 type VariantName = Literal["k1", "k2", "k3", "k3a", "k4", "k4a", "k5"]
 type AnalisisType = Literal["performance-snapshot", "hotspots", "memory-access", "uarch-exploration"]
 type RangeName = Literal["min_max", "half_max", "min_half"]
-type OMPSchedule = Literal["static", "dynamic", "guided", "auto"]
+type OMPSchedule = Literal["static", "dynamic", "guided", "auto"] | None
 type OMPChunkSize = int | None
+type BlockSize = int | None
 
 variants: dict[VariantName, str] = {
   "k1": "./x64/Release/K1_Dzielenie_sekwencyjne.exe",
@@ -62,7 +64,7 @@ def create_normal_command(
     variant: VariantName,
     range_name: RangeName,
     times: int = 2,
-    block_size: int = 48 * 1024,
+    block_size: BlockSize = 48 * 1024,
 ) -> list[str]:
   m, n = ranges[range_name]
   exe_path = os.path.abspath(variants[variant])
@@ -83,25 +85,30 @@ def create_normal_env(
   
   return f"$env:OMP_SCHEDULE='{omp_schedule},{omp_chunk_size}';"
 
-def measure(command: list[str], env_vars: dict[str, str] | None = None) -> float:
+def measure(command: list[str], env_vars: dict[str, str] | None = None) -> tuple[float, int]:
+
+  result = None
+  my_env = os.environ.copy()
+  if env_vars: my_env.update(env_vars)
+
   start_time: float = time()
   try:
-    my_env = os.environ.copy()
-    if env_vars: my_env.update(env_vars)
-    
-    subprocess.run(
+    result = subprocess.run(
       command,
       check=False,
-      env=my_env, 
-      stdout=subprocess.DEVNULL,
-      stderr=subprocess.DEVNULL
+      env=my_env,
+      stdout=subprocess.PIPE,
+      stderr=subprocess.PIPE,
+      text=True,
     )
-    
   except Exception as e:
     print(f"Error: {e}", file=sys.stderr)
   end_time: float = time()
 
-  return round(end_time - start_time, ndigits=3)
+  if result is None: raise RuntimeError("Failed to execute the command.")
+
+  primes = int(result.stdout.strip())
+  return round(end_time - start_time, ndigits=3), primes
 
 def avg_deviation(results: list[float]) -> tuple[float, float]:
   avg = sum(results) / len(results)
