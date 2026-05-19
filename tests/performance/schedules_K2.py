@@ -36,8 +36,6 @@ tests: list[tuple[vt.OMPSchedule, vt.OMPChunkSize]] = [
 
 times: int = 1
 for schedule, chunk_size in tests:
-  label = f" {schedule}-{chunk_size}"
-
   results = [ vt.measure(
     vt.create_normal_command(variant, "min_max", times),
     vt.create_python_env(schedule, chunk_size)
@@ -45,4 +43,4 @@ for schedule, chunk_size in tests:
 
   avg, deviations = vt.avg_deviation(results)
 
-  vt.print_csv_row(label, avg, deviations)
+  vt.print_csv_row(schedule, chunk_size, avg, deviations)
