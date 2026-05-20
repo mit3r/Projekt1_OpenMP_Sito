@@ -57,21 +57,20 @@ int main(int argc, char** argv) {
 		}
 
 		#pragma omp parallel for schedule(runtime)
-		for(int low = m; low <= n; low += blockSize) {
-			int high = std::min(low + blockSize - 1, n);
+		for(int i = 2; i <= sqrt_n; i++) {
+			if(!basePrimes[i])
+				continue;
 
-			for(int i = 2; i <= sqrt_n; i++) {
-				if(basePrimes[i] == false)
-					continue;
+			int firstMultiple = (m / i) * i;
 
-				int firstMultiple = (low + i - 1) / i * i;
+			if(firstMultiple < m)
+				firstMultiple += i;
 
-				if(firstMultiple == i) firstMultiple += i;
-				if(firstMultiple < i * i) firstMultiple = i * i;
+			if(firstMultiple <= i)
+				firstMultiple = i * 2;
 
-				for(int j = firstMultiple; j <= high; j += i) {
-					result[j - m] = false;
-				}
+			for(int j = firstMultiple; j <= n; j += i) {
+				result[j - m] = false;
 			}
 		}
 	}

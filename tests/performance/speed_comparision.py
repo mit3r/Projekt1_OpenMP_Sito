@@ -1,12 +1,13 @@
 import _vtune_utils as vt
 
 variants: list[tuple[vt.VariantName, vt.OMPSchedule, vt.OMPChunkSize, vt.BlockSize, int]] = [
-  ("k1", None, None, None, 1), # git
-  ("k2", "dynamic", 1000, None, 2), # git
-  ("k3", None, None, 1024 * 1024, 20),
-  ("k4", "guided", 1, None, 1000), # git
-  ("k4a", "guided", 1, None, 1000), # git
-  ("k5", "guided", 1, 128 * 1024, 100), # git
+  # ("k1", None, None, None, 1), # git
+  # ("k2", "dynamic", 1000, None, 1), # git
+  # ("k3", None, None, 1024 * 1024, 20),
+  ("k3a", None, None, 256 * 1024, 20), # git
+  # ("k4", "guided", 1, None, 50), # git
+  # ("k4a", "guided", 1, None, 50), # git
+  # ("k5", "guided", 1, 128 * 1024, 100), # git
 ]
 
 trials: int = 5

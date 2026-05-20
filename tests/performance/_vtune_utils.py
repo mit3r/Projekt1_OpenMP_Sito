@@ -67,12 +67,12 @@ def create_vtune_command(
 def create_normal_command(
     variant: VariantName,
     range_name: RangeName,
-    times: int = 2,
+    loops: int = 2,
     block_size: BlockSize = 48 * 1024,
 ) -> list[str]:
   m, n = ranges[range_name]
   exe_path = os.path.abspath(variants[variant])
-  return [exe_path, "-m", str(m), "-n", str(n), "-t", str(times), "-b", str(block_size) ]
+  return [exe_path, "-m", str(m), "-n", str(n), "-t", str(loops), "-b", str(block_size) ]
 
 def create_python_env(
     omp_schedule: OMPSchedule,

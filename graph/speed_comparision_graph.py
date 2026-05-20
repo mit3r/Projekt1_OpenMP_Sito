@@ -31,7 +31,7 @@ df = pd.read_csv(
     StringIO(data),
     sep=';',
     header=0,
-    names=["variant", "range_name", "avg_time", "std_dev", "loops", "trials"],
+    names=["variant", "schedule", "chunk_size", "block_size", "range_name", "avg_time", "std_dev", "loops", "trials"],
     skipinitialspace=True,
     keep_default_na=False,
 )
