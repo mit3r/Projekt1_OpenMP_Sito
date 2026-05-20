@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 # 1. Dane wejściowe
-data = open("outputs_3/K5_mix.csv", "r", encoding="utf-8").read()
+data = open("../outputs_4/k5.csv", "r", encoding="utf-16").read()
 
 # 2. Parsowanie danych do DataFrame
 from io import StringIO
@@ -91,4 +91,5 @@ for idx, block_size in enumerate(block_sizes):
 
 fig.suptitle('Kod K5 - porównanie prędkości przetwarzania w funkcji wielkości bloku oraz charakterystycznych rodzajów podziału pracy', fontsize=14, weight='bold', y=0.995)
 plt.tight_layout()
-plt.show()
+#plt.show()
+plt.savefig("../outputs_4/K5.png")

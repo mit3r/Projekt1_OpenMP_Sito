@@ -9,7 +9,7 @@ ranges_to_int = {
     "min_half": 10e8 // 2 - 2 + 1,
 }
 
-data = open("outputs_3/K4_schedules.csv", "r", encoding="utf-8").read()
+data = open("../outputs_4/k4.csv", "r", encoding="utf-16").read()
 
 df = pd.read_csv(
     StringIO(data),
@@ -73,4 +73,5 @@ ax.set_axisbelow(True) # Chowa linie siatki pod kolumnami
 ax.legend(title='Podział pracy (schedule)', fontsize=11, title_fontsize=11, loc='upper right')
 
 plt.tight_layout()
-plt.show()
+plt.savefig("../outputs_4/K4.png")
+#plt.show()

@@ -6,12 +6,12 @@ import csv
 
 variants: list[tuple[vt.VariantName, vt.OMPSchedule, vt.OMPChunkSize, vt.BlockSize, int]] = [
   ("k1", None, None, None, 1), # git
-  ("k2", "guided", 1, None, 1), # git
+  ("k2", "dynamic", 5000, None, 1), # git
   ("k3", None, None, None, 20),
-  ("k3a", None, None, 512 * 1024, 20), # git
+  ("k3a", None, None, 48 * 1024, 20), # git
   ("k4", "dynamic", 1, None, 10), # git
   ("k4a", "dynamic", 1, None, 10), # git
-  ("k5", "guided", 1, 64 * 1024, 50), # git
+  ("k5", "dynamic", 1, 64 * 1024, 50), # git
 ]
 
 def run_vtune(cmd: list[str], output_path: str, env: dict[str, str], variant_name: str):

@@ -9,7 +9,7 @@ ranges_to_int = {
     "min_half": 10e8 // 2 - 2 + 1,
 }
 
-data = open("outputs_3/K3a_blocks.csv", "r", encoding="utf-8").read()
+data = open("../outputs_4/k3a.csv", "r", encoding="utf-16").read()
 
 df = pd.read_csv(
     StringIO(data),
@@ -90,4 +90,5 @@ ax.legend(
 )
 
 plt.tight_layout()
-plt.show()
+#plt.show()
+plt.savefig("../outputs_4/K3a.png")

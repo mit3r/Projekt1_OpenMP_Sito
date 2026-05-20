@@ -12,7 +12,7 @@ ranges_to_int = {
 
 # Przykładowe dane (kilka wariantów, każdy ma 3 zakresy)
 
-data = open("outputs_3/speed_comp.csv", "r", encoding="utf-8").read()
+data = open("../outputs_4/speed_comp.csv", "r", encoding="utf-16").read()
 
 # data = """variant;range_name;avg_time;std_dev;loops;trials
 # Kod_V1;min_max;1.5;0.05;1;5
@@ -104,4 +104,5 @@ ax.set_axisbelow(True)
 ax.legend(title='Zakres danych', fontsize=11, title_fontsize=11, loc='upper left')
 
 plt.tight_layout()
-plt.show()
+# plt.show()
+plt.savefig("../outputs_4/speed_comp.png")
