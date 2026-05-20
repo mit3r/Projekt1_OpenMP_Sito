@@ -71,12 +71,12 @@ for idx, block_size in enumerate(block_sizes):
         # Automatyczne dodawanie wartości liczbowych nad słupkami
         ax.bar_label(
             bars, fmt='%.1f', padding=4, 
-            fontsize=7, weight='bold', color=colors[t], rotation=45
+            fontsize=7, weight='bold', color=colors[t], rotation=90
         )
 
     # Ograniczenia, podpisy i estetyka
     max_speed = block_df['speed'].max()
-    ax.set_ylim(0, max_speed * 1.15)  # 15% marginesie na górze
+    ax.set_ylim(0, max_speed * 1.25)  # 15% marginesie na górze
     ax.set_xticks(x)
     ax.set_xticklabels(chunk_order, fontsize=9)
 

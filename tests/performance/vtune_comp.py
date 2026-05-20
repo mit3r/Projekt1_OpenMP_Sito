@@ -5,12 +5,13 @@ import sys
 import csv
 
 variants: list[tuple[vt.VariantName, vt.OMPSchedule, vt.OMPChunkSize, vt.BlockSize, int]] = [
-  ("k1", None, None, None, 1),
-  ("k2", "dynamic", 1000, None, 2),
-  ("k3", None, None, 1024 * 1024, 20),
-  ("k4", "guided", 1, None, 1000),
-  ("k4a", "guided", 1, None, 1000),
-  ("k5", "guided", 1, 128 * 1024, 100),
+  ("k1", None, None, None, 1), # git
+  ("k2", "guided", 1, None, 1), # git
+  ("k3", None, None, None, 20),
+  ("k3a", None, None, 512 * 1024, 20), # git
+  ("k4", "dynamic", 1, None, 10), # git
+  ("k4a", "dynamic", 1, None, 10), # git
+  ("k5", "guided", 1, 64 * 1024, 50), # git
 ]
 
 def run_vtune(cmd: list[str], output_path: str, env: dict[str, str], variant_name: str):
@@ -28,13 +29,13 @@ def run_vtune(cmd: list[str], output_path: str, env: dict[str, str], variant_nam
     subprocess.run(report_cmd, capture_output=True, text=True, check=False)
 
 def main():
-    vt.print_csv_row("variant", "schedule", "chunk_size", "block_size", "range_name", 
-                     "Elapsed Time", "Instructions Retired", "Clockticks", "Retiring", 
-                     "Front-End Bound", "Back-End Bound", "Memory Bound", "Core Bound", 
-                     "Effective Physical Core Utilization")
 
     for name, schedule, chunk_size, block_size, loops in variants:
         for test_range in vt.ranges:
+            
+            print(f"Running VTune for variant: {name}, range: {test_range}", file=sys.stderr)
+
+            print("uarch-exploration", file=sys.stderr)
             cmd, output_path = vt.create_vtune_command(
                 variant=name, 
                 range_name=test_range, 

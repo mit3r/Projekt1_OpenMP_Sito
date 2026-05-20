@@ -23,3 +23,9 @@ for name, schedule, chunk_size, block_size, loops in variants:
       avg, deviations = vt.avg_deviation(results)
 
       vt.print_test_row(name, schedule, chunk_size, block_size, test_range, avg, deviations, loops, trials)
+
+
+      # /opt/intel/oneapi/vtune/2025.10/bin64/vtune -collect uarch-exploration -result-dir $RESULT_DIR -- $PROG $ARG
+        
+        # 2. Generowanie raportu CSV
+        # /opt/intel/oneapi/vtune/2025.10/bin64/vtune -report summary -result-dir $RESULT_DIR -format csv -csv-delimiter comma -report-output $CSV_FILE
