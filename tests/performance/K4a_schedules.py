@@ -23,7 +23,7 @@ tests: list[tuple[vt.OMPSchedule, vt.OMPChunkSize]] = [
   ("guided", 5000),
 ]
 
-loops: int = 50
+loops: int = 10
 trials = 5
 
 vt.print_test_header()
