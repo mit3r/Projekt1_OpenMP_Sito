@@ -4,12 +4,12 @@ import pandas as pd
 from io import StringIO
 
 ranges_to_int = {
-    "min_max": 10e8 - 2 + 1,
-    "half_max": 10e8 - 10e8 // 2 + 1,
-    "min_half": 10e8 // 2 - 2 + 1,
+    "min_max": 1e8 - 2 + 1,
+    "half_max": 1e8 - 1e8 // 2 + 1,
+    "min_half": 1e8 // 2 - 2 + 1,
 }
 
-data = open("../outputs_4/k4.csv", "r", encoding="utf-16").read()
+data = open("../outputs/k4.csv", "r", encoding="utf-16").read()
 
 df = pd.read_csv(
     StringIO(data),
@@ -60,7 +60,7 @@ for i, t in enumerate(types):
         fontsize=8.5, weight='bold', color=colors[t], rotation=45
     )
 
-ax.set_ylim(0, max(df['avg_speed'] * 1.2)) # Ustawienie górnej granicy osi Y na 20% powyżej maksymalnej prędkości
+ax.set_ylim(0, max(df['avg_speed'] * 1.2))
 ax.set_xticks(x)
 ax.set_xticklabels(chunk_order, fontsize=11)
 
@@ -69,9 +69,8 @@ ax.set_xlabel('Tryb automatyczny / Wielkość chunku ', fontsize=12, labelpad=10
 ax.set_ylabel('Prędkość przetwarzania [$10^6$ liczb/s]', fontsize=12)
 
 ax.grid(True, axis='y', linestyle='--', alpha=0.5)
-ax.set_axisbelow(True) # Chowa linie siatki pod kolumnami
+ax.set_axisbelow(True)
 ax.legend(title='Podział pracy (schedule)', fontsize=11, title_fontsize=11, loc='upper right')
 
 plt.tight_layout()
-plt.savefig("../outputs_4/K4.png")
-#plt.show()
+plt.savefig("../outputs/K4.png")

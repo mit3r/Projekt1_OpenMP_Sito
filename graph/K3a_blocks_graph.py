@@ -4,12 +4,12 @@ import pandas as pd
 from io import StringIO
 
 ranges_to_int = {
-    "min_max": 10e8 - 2 + 1,
-    "half_max": 10e8 - 10e8 // 2 + 1,
-    "min_half": 10e8 // 2 - 2 + 1,
+    "min_max": 1e8 - 2 + 1,
+    "half_max": 1e8 - 1e8 // 2 + 1,
+    "min_half": 1e8 // 2 - 2 + 1,
 }
 
-data = open("../outputs_4/k3a.csv", "r", encoding="utf-16").read()
+data = open("../outputs/k3a.csv", "r", encoding="utf-16").read()
 
 df = pd.read_csv(
     StringIO(data),
@@ -69,7 +69,7 @@ for i, data_range in enumerate(range_order):
         rotation=90,
     )
 
-ax.set_ylim(0, 10_000)
+ax.set_ylim(0, 1000)
 ax.set_xticks(x)
 ax.set_xticklabels([f'{size:g} KB' for size in block_order], fontsize=10)
 
@@ -84,11 +84,8 @@ ax.legend(
     fontsize=11,
     title_fontsize=11,
     loc='upper right',
-    # bbox_to_anchor=(0.5, 0.98),
-    # ncol=len(range_order),
     borderaxespad=0.2,
 )
 
 plt.tight_layout()
-#plt.show()
-plt.savefig("../outputs_4/K3a.png")
+plt.savefig("../outputs/K3a.png")
