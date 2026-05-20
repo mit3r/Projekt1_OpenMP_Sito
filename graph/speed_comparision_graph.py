@@ -88,19 +88,20 @@ for i, r_name in enumerate(range_order):
     )
 
 # Estetyka i konfiguracja osi
-ax.set_ylim(0, max(df['avg_speed'] * 1.25))  # Zapas na etykiety tekstowe nad słupkami
+ax.set_yscale("log")
+ax.set_ylim(0, max(df['avg_speed'] * 5))  # Zapas na etykiety tekstowe nad słupkami
 ax.set_xticks(x)
 ax.set_xticklabels(variant_order, fontsize=11, weight='bold')
 
 ax.set_title('Porównanie prędkości przetwarzania wariantów kodu dla różnych zakresów danych', fontsize=14, pad=25, weight='bold')
-ax.set_xlabel('Warianty kodu', fontsize=12, labelpad=10)
+ax.set_xlabel('Wariant kodu', fontsize=12, labelpad=10)
 ax.set_ylabel('Prędkość przetwarzania [$10^6$ liczb/s]', fontsize=12)
 
 ax.grid(True, axis='y', linestyle='--', alpha=0.5)
 ax.set_axisbelow(True)
 
 # Legenda opisująca zakresy danych
-ax.legend(title='Zakres danych', fontsize=11, title_fontsize=11, loc='upper right')
+ax.legend(title='Zakres danych', fontsize=11, title_fontsize=11, loc='upper left')
 
 plt.tight_layout()
 plt.show()
